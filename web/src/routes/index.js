@@ -11,7 +11,28 @@ router.get("/", async (req, res) => {
         return res.redirect("/login");
     }
 
-    res.render("home", { utilizador });
+    const [servicos] = await db.query("SELECT * FROM servicos");
+
+    res.render("home", { 
+        utilizador,
+        servicos
+    });
+});
+
+router.post("/book", async (req, res) => {
+    const { id_servico, data, hora } = req.body;
+    const utilizadorID = req.session.utilizador.id;
+
+    try {
+        await db.query("INSERT INTO bookings (id_utilizador, id_servico, data, hora) VALUES (?, ?, ?, ?)",
+            [utilizadorID, id_servico, data, hora]
+        );
+
+        res.redirect("/");
+    } catch (err) {
+        console.log(err);
+        res.send("Erro ao criar reserva");
+    }
 });
 
 // LOGIN
