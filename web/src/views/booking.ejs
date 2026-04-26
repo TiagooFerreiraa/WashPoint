@@ -24,17 +24,36 @@
             </div>
             <div class="mb-3">
               <label class="form-label">Data</label>
-              <input type="date" class="form-control" name="data" required>
+              <input type="date" class="form-control" name="data" required id="data">
             </div>
             <div class="mb-3">
               <label class="form-label">Hora</label>
-              <input type="time" class="form-control" name="hora" required>
+              <input type="time" class="form-control" name="hora" min="9:00" max="18:00" required id="hora">
             </div>
             <button type="submit" class="btn btn-primary w-100">Reservar</button>
           </form>
+          <br>
+          <% if (error === "invalid_date") { %>
+            <div class="alert alert-danger">Data inválida. Escolhe um dia futuro.</div>
+          <% } %>
+          <% if (error === "weekend_only") { %>
+            <div class="alert alert-danger">Só podes reservar ao fim de semana.</div>
+          <% } %>
+          <% if (error === "invalid_time") { %>
+            <div class="alert alert-danger">Horário disponível apenas entre 09:00 e 18:00.</div>
+          <% } %>
         </div>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const input = document.getElementById("data");
+
+      const hoje = new Date();
+      hoje.setDate(hoje.getDate() + 1); // NÃO PERMITIR DIA ATUAL
+
+      const minDate = hoje.toISOString().split("T")[0];
+      input.setAttribute("min", minDate);
+    </script>
   </body>
 </html>

@@ -24,12 +24,32 @@ router.get("/booking", async (req, res) => {
 
     res.render("booking", {
         servicos,
-        selected: req.query.servico
+        selected: req.query.servico,
+        error: req.query.error
     });
 });
 router.post("/booking", async (req, res) => {
     const { id_servico, data, hora } = req.body;
     const utilizadorID = req.session.utilizador.id;
+
+    const dataSelecionada = new Date(data);
+    const hoje = new Date();
+
+    hoje.setHours(0, 0, 0, 0);
+
+    if (dataSelecionada <= hoje) {
+        return res.redirect("/booking?error=invalid_date");
+    }
+
+    const dia = dataSelecionada.getDay();
+
+    if (dia !== 0 && dia !== 6) {
+        return res.redirect("/booking?error=weekend_only");
+    }
+
+    if (hora < "09:00" || hora > "18:00") {
+        return res.redirect("/booking?error=invalid_time");
+    }
 
     try {
         await db.query("INSERT INTO bookings (id_utilizador, id_servico, data, hora) VALUES (?, ?, ?, ?)",
