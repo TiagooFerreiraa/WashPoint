@@ -5,12 +5,15 @@ require("dotenv");
 
 const app = express();
 
+// ENCRIPTAÇÃO
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// UTILIZAR PASTA 'VIEWS'
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+// SESSÃO
 app.use(session({
     secret: "washpoint-secret-key",
     resave: false,

@@ -7,7 +7,7 @@ public class Main {
 
     static String url = "jdbc:mysql://localhost:3306/washpoint";
     static String utilizador = "root";
-    static String palavra_passe = "tiago";
+    static String palavra_passe = "";
 
     static DefaultTableModel model;
     static JTable table;

@@ -11,21 +11,25 @@
     <div class="card shadow p-4" style="width: 350px;">
       <h2 class="text-center mb-3">Cadastrar</h2>
       <form method="POST" action="/register">
-        <div class="mb-3">
+        <div class="form-floating mb-3">
+          <input type="email" class="form-control" name="email" maxlength="60" placeholder="nome@exemplo.com">
           <label class="form-label">Endereço de Email</label>
-          <input type="email" class="form-control" name="email" maxlength="60">
         </div>
-        <div class="mb-3">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" name="nome_utilizador" maxlength="100" placeholder="Nome de Utilizador">
           <label class="form-label">Nome de Utilizador</label>
-          <input type="text" class="form-control" name="nome_utilizador" maxlength="100">
         </div>
-        <div class="mb-3">
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" name="palavra_passe" placeholder="Palavra-Passe">
           <label class="form-label">Palavra-Passe</label>
-          <input type="password" class="form-control" name="palavra_passe">
         </div>
         <button type="submit" class="btn btn-primary w-100">Registar</button>
       </form>
-      <p>Já tens conta? <a href="login">Entra na tua conta</a></p>
+      <br>
+      <p class="text-center">Já tens conta? <a href="login">Entra na tua conta</a></p>
+      <% if (success) { %>
+        <p class="text-center" style="color: green;">Utilizador criado com sucesso!</p>
+      <% } %>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

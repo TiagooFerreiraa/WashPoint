@@ -19,7 +19,15 @@ router.get("/", async (req, res) => {
     });
 });
 
-router.post("/book", async (req, res) => {
+router.get("/booking", async (req, res) => {
+    const [servicos] = await db.query("SELECT * FROM servicos");
+
+    res.render("booking", {
+        servicos,
+        selected: req.query.servico
+    });
+});
+router.post("/booking", async (req, res) => {
     const { id_servico, data, hora } = req.body;
     const utilizadorID = req.session.utilizador.id;
 
@@ -49,14 +57,16 @@ router.post("/login", async (req, res) => {
     }
 
     const utilizador = rows[0];
-    console.log(palavra_passe);
-    console.log(utilizador.palavra_passe);
+    // DEBUG
+    // console.log(palavra_passe);
+    // console.log(utilizador.palavra_passe);
 
     const match = await bcrypt.compare(palavra_passe, utilizador.palavra_passe);
 
     if (match) {
         req.session.utilizador = {
             id: utilizador.id,
+            nome: utilizador.nome_utilizador,
             email: utilizador.email
         }
 
@@ -70,8 +80,10 @@ router.post("/login", async (req, res) => {
 
 // REGISTRO
 router.get("/register", async (req, res) => {
-    res.render("register");
-})
+    res.render("register", {
+        success: req.query.success
+    });
+});
 router.post("/register", async (req, res) => {
     const { email, nome_utilizador, palavra_passe } = req.body;
 
@@ -82,7 +94,7 @@ router.post("/register", async (req, res) => {
             [email, nome_utilizador, hashedPalavra_Passe]
         );
 
-        res.send("Utilizador criado");
+        res.redirect("/register?success=1");
     } catch (err) {
         res.send("Erro ao criar utilizador");
     }
